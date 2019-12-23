@@ -1,0 +1,37 @@
+Number of Populations
+    1 / 2
+Choosing members to make S
+    Selecion in one pop operates independantly of other population
+    Pop size of 25
+    Players only play from other populations
+Sample Size
+    15
+Selection Scheme
+    Fitness proportionate selection
+Variation Operators
+    Mutation
+    Fixed length binary string (100 bit)
+    Probability = 0.005
+
+REQUIREMENT:
+    Reproduce fig 3,4,5 and contrast with 2
+
+EXTENSION:
+    How Coevolution goes wrong, can you fix it?
+
+
+Psubjective(a,b) = Pobjective(f(a,Sa), f(b,Sb))
+Pobjective returns the greater of the two
+
+EQUATION 1:
+    fitness(a,S) = Sum(score(a,Si)) from 1 to size of S
+    score(a,b) = 1 if a > b; else 0
+    a = target number, S = Sample of individuals against which a is tested
+
+EQUATION 2:
+    fitness2(a, S) = Sum(score2(a,Si)) from 1 to size of S
+    score2((ax, ay), (bx, by)) = score(ax, bx), if (mod(ax - bx) > mod(ay - by)) else score(ay, by) 
+
+EQUATION 3:
+    fitness3(a,S) = Sum(score3(a,Si)) from 1 to size of S
+    score3((ax, ay), (bx, by)) = score(ax, bx), if (mod(ax - bx) < mod(ay - by)) else score(ay, by) 
