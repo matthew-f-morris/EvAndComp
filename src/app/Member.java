@@ -2,17 +2,23 @@ package app;
 
 public class Member {
 
-    int[] bits;
+    private int[][] bits;
+    private int dimentions;
 
-    public Member(int size){
-        bits = new int[size];
+    public Member(int size, int dimention) {
+        this.bits = new int[dimention][size / dimention];
+        this.dimentions = dimention;
     }
 
-    public int[] getBits(){
+    public int[][] getBits() {
         return this.bits;
     }
 
-    public void setBits(int[] newBits){
+    public void setBits(int[][] newBits) {
         this.bits = newBits;
+    }
+
+    public int getDs() {
+        return dimentions;
     }
 }

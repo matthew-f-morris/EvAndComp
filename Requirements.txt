@@ -35,3 +35,18 @@ EQUATION 2:
 EQUATION 3:
     fitness3(a,S) = Sum(score3(a,Si)) from 1 to size of S
     score3((ax, ay), (bx, by)) = score(ax, bx), if (mod(ax - bx) < mod(ay - by)) else score(ay, by) 
+
+FIGURE 2: Coevolution Using Equation 1
+    - 2 Populations
+    - Show subjective fitness for both pops
+
+FIGURE 3: Coevolution Using Equation 1
+    - 2 Populations
+    - Show subjective fitness for both pops
+    - Sample size S of 1 (1 randomly selected player from other pop)
+
+FIGURE 4: Coevolution Using Equation 2
+    - 10D at 10 bit
+
+FIGURE 5: Coevolution Using Equation 3
+    - 2 populations
