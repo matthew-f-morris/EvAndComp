@@ -1,5 +1,7 @@
 package app;
 
+import java.util.Arrays;
+
 public class EquationThree extends Equation {
 
     public EquationThree(int a) {
@@ -25,40 +27,21 @@ public class EquationThree extends Equation {
         int[][] bitsB = Mb.getBits();
 
         for (int i = 0; i < bitsA.length; i++) {
-            int localA = 0;
-            int localB = 0;
-            for (int j = 0; j < bitsA[i].length; j++) {
-                localA += bitsA[i][j];
-                localB += bitsB[i][j];
-            }
-
-            sumA[i] = localA;
-            sumB[i] = localB;
+            sumA[i] = Arrays.stream(bitsA[i]).sum();
+            sumB[i] = Arrays.stream(bitsB[i]).sum();
         }
 
-        int bestA = -1;
-        int bestB = -1;
+        int best = -1;
         int diff = 100000;
 
         for (int i = 0; i < sumA.length; i++) {
-            for (int j = 0; j < sumB.length; j++) {
-                int score = Math.abs(sumA[i] - sumB[j]);
-                if (score < diff) {
-                    bestA = i;
-                    bestB = j;
-                    diff = score;
-                }
+            int score = Math.abs(sumA[i] - sumB[i]);
+            if (score < diff) {
+                best = i;
+                diff = score;
             }
         }
 
-        int a = 0;
-        int b = 0;
-
-        for (int i = 0; i < bitsA[bestA].length; i++) {
-            a += i;
-            b += bitsB[bestB][i];
-        }
-
-        return a > b ? 1 : 0;
+        return sumA[best] > sumB[best] ? 1 : 0;
     }
 }

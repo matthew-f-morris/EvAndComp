@@ -1,12 +1,14 @@
 package app;
 
+import java.util.Arrays;
+
 public class EquationOne extends Equation {
 
     public EquationOne(int a) {
         super(a);
     }
 
-    public int getFitness(Member[] S) {
+    public int getFitness(Member a, Member[] S) {
 
         int sum = -1;
         for (Member si : S) {
@@ -16,14 +18,14 @@ public class EquationOne extends Equation {
         return sum;
     }
 
-    private int score(int a, Member m) {
-        int b = 0;
-        for (int[] ds : m.getBits()) {
-            for (int i : ds) {
-                b += i;
-            }
-        }
+    private int score(Member a, Member b) {
 
-        return a > b ? 1 : 0;
+        int[] bitsA = a.getBits()[0];
+        int[] bitsB = b.getBits()[0];
+
+        int sumA = Arrays.stream(bitsA).sum();
+        int sumB = Arrays.stream(bitsB).sum();
+
+        return sumA > sumB ? 1 : 0;
     }
 }
