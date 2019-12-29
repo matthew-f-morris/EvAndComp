@@ -4,17 +4,18 @@ import java.util.Arrays;
 
 public class EquationOne extends Equation {
 
+    public EquationOne(int sampleSize) {
+        super(sampleSize);
+    }
+
     public int getFitness(Member a, Member[] S) {
 
-        long start = System.nanoTime();
-
+        int[] subsamples = getSubsampleIndexes(S.length);
+        Member[] sub = getSubSample(S, subsamples);
         int sum = 0;
-        for (int i = 0; i < S.length; i++) {
-            sum += score(a, S[i]);
+        for (int i = 0; i < sub.length; i++) {
+            sum += score(a, sub[i]);
         }
-
-        long end = System.nanoTime();
-        System.out.println("D: " + (end - start));
         return sum;
     }
 
