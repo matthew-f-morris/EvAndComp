@@ -11,15 +11,16 @@ public class Selector {
         this.eq = eq;
     }
 
-    public Member[] selectPop(Member[] pop) {
+    public Member[] selectPop(Member[] pop, Member[] otherPop) {
 
         Member[] newPop = new Member[pop.length];
+        Member[] S = eq.getSubSample(otherPop, eq.getSubsampleIndexes(otherPop.length));
 
         int sum = 0;
         int[] wheel = new int[newPop.length];
 
         for (int i = 0; i < pop.length; i++) {
-            sum += eq.getFitness(pop[i], pop);
+            sum += eq.getFitness(pop[i], S);
             wheel[i] = sum;
         }
 

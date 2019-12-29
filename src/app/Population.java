@@ -6,17 +6,13 @@ import java.util.SplittableRandom;
 public class Population {
 
     private SplittableRandom rand = new SplittableRandom();
-    private Equation eq;
     private Selector select;
-    private double probability;
     public Member[] pop1;
     public Member[] pop2;
 
-    public Population(Equation eq, Selector select, double probability, int popSize, int target, int dimention) {
+    public Population(Selector select, double probability, int popSize, int target, int dimention) {
 
-        this.eq = eq;
         this.select = select;
-        this.probability = probability;
 
         pop1 = new Member[popSize];
         pop2 = new Member[popSize];
@@ -25,20 +21,18 @@ public class Population {
             pop2[i] = new Member(target, dimention, probability);
         }
 
-        for (int i = 0; i < popSize; i++) {
-            pop1[i].objectiveFitness();
+        for (Member m : pop1) {
+            m.mutate();
         }
 
-        for (int i = 0; i < popSize; i++) {
-            pop2[i].objectiveFitness();
+        for (Member m : pop2) {
+            m.mutate();
         }
     }
 
     public Population(Member[] pop1, Member[] pop2) {
         this.pop1 = pop1;
         this.pop2 = pop2;
-        this.eq = null;
-        this.probability = 0.005;
     }
 
     public void run() {

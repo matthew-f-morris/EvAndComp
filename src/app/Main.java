@@ -1,7 +1,5 @@
 package app;
 
-import java.util.Arrays;
-
 public class Main {
 
     public static void main(String[] args) {
@@ -12,7 +10,11 @@ public class Main {
 
         Equation eq = new EquationOne(sampleSize);
         Selector select = new Selector(eq);
-        Population p = new Population(eq, select, probability, 25, 100, 1);
+        Population p = new Population(select, probability, popSize, 100, 1);
+
+        System.out.println(p.toString());
+
+        p.run();
 
         System.out.println(p.toString());
 

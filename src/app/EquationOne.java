@@ -10,11 +10,9 @@ public class EquationOne extends Equation {
 
     public int getFitness(Member a, Member[] S) {
 
-        int[] subsamples = getSubsampleIndexes(S.length);
-        Member[] sub = getSubSample(S, subsamples);
         int sum = 0;
-        for (int i = 0; i < sub.length; i++) {
-            sum += score(a, sub[i]);
+        for (int i = 0; i < S.length; i++) {
+            sum += score(a, S[i]);
         }
         return sum;
     }

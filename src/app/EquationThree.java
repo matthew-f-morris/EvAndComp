@@ -4,6 +4,10 @@ import java.util.Arrays;
 
 public class EquationThree extends Equation {
 
+    public EquationThree(int sampleSize) {
+        super(sampleSize);
+    }
+
     public int getFitness(Member a, Member[] S) {
 
         int sum = 0;
