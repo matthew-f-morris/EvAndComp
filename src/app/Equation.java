@@ -2,9 +2,7 @@ package app;
 
 public abstract class Equation {
 
-    // public int a;
+    public abstract int getFitness(Member a, Member[] S);
 
-    public Equation(int a) {
-        // this.a = a;
-    }
+    public abstract int score(Member a, Member b);
 }

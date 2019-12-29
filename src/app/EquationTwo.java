@@ -4,13 +4,9 @@ import java.util.Arrays;
 
 public class EquationTwo extends Equation {
 
-    public EquationTwo(int a) {
-        super(a);
-    }
-
     public int getFitness(Member a, Member[] S) {
 
-        int sum = -1;
+        int sum = 0;
         for (Member si : S) {
             sum += score(a, si);
         }
@@ -18,7 +14,7 @@ public class EquationTwo extends Equation {
         return sum;
     }
 
-    private int score(Member Ma, Member Mb) {
+    public int score(Member Ma, Member Mb) {
 
         int[] sumA = new int[Ma.getDs()];
         int[] sumB = new int[Mb.getDs()];

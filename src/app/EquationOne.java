@@ -4,27 +4,24 @@ import java.util.Arrays;
 
 public class EquationOne extends Equation {
 
-    public EquationOne(int a) {
-        super(a);
-    }
-
     public int getFitness(Member a, Member[] S) {
 
-        int sum = -1;
-        for (Member si : S) {
-            sum += score(a, si);
+        long start = System.nanoTime();
+
+        int sum = 0;
+        for (int i = 0; i < S.length; i++) {
+            sum += score(a, S[i]);
         }
 
+        long end = System.nanoTime();
+        System.out.println("D: " + (end - start));
         return sum;
     }
 
-    private int score(Member a, Member b) {
+    public int score(Member a, Member b) {
 
-        int[] bitsA = a.getBits()[0];
-        int[] bitsB = b.getBits()[0];
-
-        int sumA = Arrays.stream(bitsA).sum();
-        int sumB = Arrays.stream(bitsB).sum();
+        int sumA = Arrays.stream(a.getBits()[0]).sum();
+        int sumB = Arrays.stream(b.getBits()[0]).sum();
 
         return sumA > sumB ? 1 : 0;
     }
