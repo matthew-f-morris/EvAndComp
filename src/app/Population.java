@@ -10,23 +10,15 @@ public class Population {
     public Member[] pop1;
     public Member[] pop2;
 
-    public Population(Selector select, double probability, int popSize, int target, int dimention) {
+    public Population(Selector select, int popSize, int target, int dimention) {
 
         this.select = select;
 
         pop1 = new Member[popSize];
         pop2 = new Member[popSize];
         for (int i = 0; i < popSize; i++) {
-            pop1[i] = new Member(target, dimention, probability);
-            pop2[i] = new Member(target, dimention, probability);
-        }
-
-        for (Member m : pop1) {
-            m.mutate();
-        }
-
-        for (Member m : pop2) {
-            m.mutate();
+            pop1[i] = new Member(target, dimention);
+            pop2[i] = new Member(target, dimention);
         }
     }
 
@@ -35,24 +27,38 @@ public class Population {
         this.pop2 = pop2;
     }
 
-    public void run() {
+    public void run(int gen, boolean print, int printOnGen) {
 
         int generation = 0;
+        Member[] tempA;
+        Member[] tempB;
 
-        while (generation < 10) {
+        while (generation < gen) {
 
-            Member[] newPop1 = select.selectPop(pop1);
-            Member[] newPop2 = select.selectPop(pop2);
+            tempA = select.selectPop(this.pop1, this.pop2);
+            tempB = select.selectPop(this.pop2, this.pop1);
+            double aveA = select.getSub(this.pop1, pop2);
+            double aveB = select.getSub(this.pop2, pop1);
 
-            for (Member m : newPop1) {
+            pop1 = tempA;
+            pop2 = tempB;
+
+            for (Member m : pop1) {
                 m.mutate();
             }
 
-            for (Member m : newPop2) {
+            for (Member m : pop2) {
                 m.mutate();
             }
 
             generation++;
+
+            if (print && (generation % printOnGen == 0)) {
+                // System.out.println(this.toString());
+                // System.out.println(this.toString());
+                System.out.println(this.getOBF1() + ", " + this.getOBF2() + ", " + aveA / select.sampleSize + ", "
+                        + aveB / select.sampleSize);
+            }
         }
     }
 
@@ -68,12 +74,24 @@ public class Population {
         return 0.0;
     }
 
-    public void getOBF() {
+    public double getOBF1() {
 
+        int sum = 0;
+        for (Member m : pop1)
+            sum += m.objectiveFitness();
+        return sum / pop1.length;
+    }
+
+    public double getOBF2() {
+
+        int sum = 0;
+        for (Member m : pop2)
+            sum += m.objectiveFitness();
+        return sum / pop2.length;
     }
 
     @Override
     public String toString() {
-        return Arrays.toString(pop1) + "\n\n\n" + Arrays.toString(pop2);
+        return Arrays.toString(pop1) + "\n" + Arrays.toString(pop2) + "\n";
     }
 }

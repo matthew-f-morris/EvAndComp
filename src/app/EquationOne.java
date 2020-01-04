@@ -4,11 +4,10 @@ import java.util.Arrays;
 
 public class EquationOne extends Equation {
 
-    public EquationOne(int sampleSize) {
-        super(sampleSize);
-    }
+    public int getFitness(Member a, Member[] S) { // [PASS]
 
-    public int getFitness(Member a, Member[] S) {
+        // a = member from pop
+        // S = sample from other pop
 
         int sum = 0;
         for (int i = 0; i < S.length; i++) {
@@ -17,7 +16,7 @@ public class EquationOne extends Equation {
         return sum;
     }
 
-    public int score(Member a, Member b) {
+    public int score(Member a, Member b) { // [PASS]
 
         int sumA = Arrays.stream(a.getBits()[0]).sum();
         int sumB = Arrays.stream(b.getBits()[0]).sum();

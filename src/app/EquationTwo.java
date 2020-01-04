@@ -4,11 +4,7 @@ import java.util.Arrays;
 
 public class EquationTwo extends Equation {
 
-    public EquationTwo(int sampleSize) {
-        super(sampleSize);
-    }
-
-    public int getFitness(Member a, Member[] S) {
+    public int getFitness(Member a, Member[] S) { // [WORKS]
 
         int sum = 0;
         for (Member si : S) {
@@ -18,7 +14,7 @@ public class EquationTwo extends Equation {
         return sum;
     }
 
-    public int score(Member Ma, Member Mb) {
+    public int score(Member Ma, Member Mb) { // [WORKS]
 
         int[] sumA = new int[Ma.getDs()];
         int[] sumB = new int[Mb.getDs()];
@@ -32,7 +28,7 @@ public class EquationTwo extends Equation {
         }
 
         int best = -1;
-        int diff = 100000;
+        int diff = 0;
 
         for (int i = 0; i < sumA.length; i++) {
             int score = Math.abs(sumA[i] - sumB[i]);
@@ -42,6 +38,8 @@ public class EquationTwo extends Equation {
             }
         }
 
+        if (best == -1)
+            return 0;
         return sumA[best] > sumB[best] ? 1 : 0;
     }
 }

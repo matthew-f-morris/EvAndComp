@@ -8,33 +8,30 @@ public class Member {
     private int[][] bits;
     private int dimentions;
     private static SplittableRandom rand = new SplittableRandom();
-    private final double prob;
+    private static double p = 0.005;
 
-    public Member(int size, int dimention, double prob) {
+    public Member(int size, int dimention) {
 
         if (size % dimention != 0) {
             System.err.println("Dimention was not a multiple of size!");
             this.bits = new int[1][1];
             this.dimentions = 1;
-            this.prob = prob;
         } else {
             this.bits = new int[dimention][size / dimention];
             this.dimentions = dimention;
-            this.prob = prob;
         }
     }
 
-    public Member(int[][] bits) {
+    public Member(int[][] bits) { // [PASS]
         this.bits = bits;
         this.dimentions = bits.length;
-        this.prob = 0.005;
     }
 
     public int[][] getBits() {
         return this.bits;
     }
 
-    public void setBits(int[][] newBits) {
+    public void setBits(int[][] newBits) { // [PASS]
         this.bits = newBits;
     }
 
@@ -42,11 +39,19 @@ public class Member {
         return dimentions;
     }
 
-    public void mutate() {
+    public void mutate() { // [PASS]
 
         for (int i = 0; i < this.bits.length; i++)
             for (int j = 0; j < this.bits[i].length; j++)
-                if (rand.nextDouble() <= prob)
+                if (rand.nextDouble() < p)
+                    this.bits[i][j] = (rand.nextDouble() < 0.5) ? 0 : 1;
+    }
+
+    public void mutate(double prob) { // [PASS]
+
+        for (int i = 0; i < this.bits.length; i++)
+            for (int j = 0; j < this.bits[i].length; j++)
+                if (rand.nextDouble() < prob)
                     this.bits[i][j] = (rand.nextDouble() < 0.5) ? 0 : 1;
     }
 
@@ -60,8 +65,12 @@ public class Member {
         return sum;
     }
 
+    public int objectiveFitness(int i) {
+        return Arrays.stream(bits[i]).sum();
+    }
+
     @Override
-    public Member clone() {
+    public Member clone() { // [PASS]
 
         int[][] newBits = new int[bits.length][bits[0].length];
 
@@ -73,8 +82,7 @@ public class Member {
         return newMember;
     }
 
-    @Override
-    public String toString() {
+    public String toStringa() { // [PASS]
 
         StringBuilder builder = new StringBuilder();
         builder.append("[");
@@ -84,11 +92,20 @@ public class Member {
             for (int j = 0; j < this.bits[i].length; j++) {
                 builder.append(bits[i][j]);
             }
-            builder.append("], ");
+            builder.append("], ");s
         }
 
         builder.deleteCharAt(builder.length() - 1);
         builder.deleteCharAt(builder.length() - 1);
+        builder.append("]");
+        return builder.toString();
+    }
+
+    public String toString() {
+
+        StringBuilder builder = new StringBuilder();
+        builder.append("[");
+        builder.append(this.objectiveFitness());
         builder.append("]");
         return builder.toString();
     }
