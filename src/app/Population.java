@@ -9,14 +9,21 @@ import java.awt.datatransfer.StringSelection;
 public class Population {
 
     private SplittableRandom rand = new SplittableRandom();
-    private Selector select;
+    private Selector select1;
+    private Selector select2;
+    private Selector select3;
+    private double p;
     public Member[] pop1;
     public Member[] pop2;
     private StringBuilder sb = new StringBuilder();
 
-    public Population(Selector select, int popSize, int target, int dimention) {
+    public Population(Selector select1, Selector select2, Selector select3, int popSize, int target, int dimention,
+            double p) {
 
-        this.select = select;
+        this.select1 = select1;
+        this.select2 = select2;
+        this.select3 = select3;
+        this.p = p;
 
         pop1 = new Member[popSize];
         pop2 = new Member[popSize];
@@ -32,43 +39,31 @@ public class Population {
     }
 
     public void run(int gen, boolean print, int printOnGen) {
-        // double prob = 0.2;
+
         int generation = 0;
         Member[] tempA;
         Member[] tempB;
 
         while (generation < gen) {
 
-            tempA = select.selectPop(this.pop1, this.pop2);
-            tempB = select.selectPop(this.pop2, this.pop1);
-            double aveA = select.getSub(this.pop1, pop2);
-            double aveB = select.getSub(this.pop2, pop1);
+            tempA = select3.selectPop(this.pop1, this.pop2);
+            tempB = select3.selectPop(this.pop2, this.pop1);
+            double aveA = select1.getSub(this.pop1, pop2);
+            double aveB = select1.getSub(this.pop2, pop1);
 
             pop1 = tempA;
             pop2 = tempB;
 
-            // if (generation % 50 == 0) {
-            // if (prob - 0.01 > 0.005) {
-            // prob -= 0.01;
-            // System.out.println("Gen: " + generation + " , Prob: " + prob);
-            // }
-            // }
-
-            // for (Member m : pop1)
-            // m.mutate(prob);
-            // for (Member m : pop2)
-            // m.mutate(prob);
-
             for (Member m : pop1)
-                m.mutate();
+                m.mutate(this.p);
             for (Member m : pop2)
-                m.mutate();
+                m.mutate(this.p);
 
             generation++;
 
             if (print && (generation % printOnGen == 0)) {
-                sb.append(this.getOBF1() + ", " + this.getOBF2() + ", " + aveA / select.sampleSize + ", "
-                        + aveB / select.sampleSize + "\n");
+                sb.append(this.getOBF1() + ", " + this.getOBF2() + ", " + aveA / select1.sampleSize + ", "
+                        + aveB / select1.sampleSize + "\n");
             }
 
             // if (generation % 50 == 0) {
