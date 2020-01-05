@@ -2,6 +2,9 @@ package app;
 
 import java.util.Arrays;
 import java.util.SplittableRandom;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 
 public class Population {
 
@@ -9,6 +12,7 @@ public class Population {
     private Selector select;
     public Member[] pop1;
     public Member[] pop2;
+    private StringBuilder sb = new StringBuilder();
 
     public Population(Selector select, int popSize, int target, int dimention) {
 
@@ -28,7 +32,7 @@ public class Population {
     }
 
     public void run(int gen, boolean print, int printOnGen) {
-
+        // double prob = 0.2;
         int generation = 0;
         Member[] tempA;
         Member[] tempB;
@@ -43,35 +47,45 @@ public class Population {
             pop1 = tempA;
             pop2 = tempB;
 
-            for (Member m : pop1) {
-                m.mutate();
-            }
+            // if (generation % 50 == 0) {
+            // if (prob - 0.01 > 0.005) {
+            // prob -= 0.01;
+            // System.out.println("Gen: " + generation + " , Prob: " + prob);
+            // }
+            // }
 
-            for (Member m : pop2) {
+            // for (Member m : pop1)
+            // m.mutate(prob);
+            // for (Member m : pop2)
+            // m.mutate(prob);
+
+            for (Member m : pop1)
                 m.mutate();
-            }
+            for (Member m : pop2)
+                m.mutate();
 
             generation++;
 
             if (print && (generation % printOnGen == 0)) {
-                // System.out.println(this.toString());
-                // System.out.println(this.toString());
-                System.out.println(this.getOBF1() + ", " + this.getOBF2() + ", " + aveA / select.sampleSize + ", "
-                        + aveB / select.sampleSize);
+                sb.append(this.getOBF1() + ", " + this.getOBF2() + ", " + aveA / select.sampleSize + ", "
+                        + aveB / select.sampleSize + "\n");
             }
+
+            // if (generation % 50 == 0) {
+            // select.incSample(1);
+            // }
+        }
+
+        if (print) {
+            StringSelection selection = new StringSelection(sb.toString());
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(selection, selection);
+            System.out.println("\nFinished...");
         }
     }
 
     protected int random() {
         return rand.nextInt(pop1.length);
-    }
-
-    public double getASF1() {
-        return 0.0;
-    }
-
-    public double getASF2() {
-        return 0.0;
     }
 
     public double getOBF1() {

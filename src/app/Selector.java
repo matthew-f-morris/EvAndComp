@@ -9,10 +9,12 @@ public class Selector {
     private SplittableRandom rand = new SplittableRandom();
     private Equation eq = null;
     public int sampleSize = 15;
+    private int popSize;
 
-    public Selector(Equation eq, int sampleSize) {
+    public Selector(Equation eq, int sampleSize, int popSize) {
         this.eq = eq;
         this.sampleSize = sampleSize;
+        this.popSize = popSize;
     }
 
     public Member[] selectPop(Member[] pop, Member[] otherPop) { // [PASS]
@@ -89,5 +91,19 @@ public class Selector {
         }
 
         return newIndexes;
+    }
+
+    public void incSample(int inc) {
+        if (sampleSize + inc < popSize) {
+            this.sampleSize += inc;
+            System.out.println("SS: " + this.sampleSize);
+        }
+    }
+
+    public void decSample(int dec) {
+        if (sampleSize - dec > 0) {
+            this.sampleSize -= dec;
+            System.out.println("SS: " + this.sampleSize);
+        }
     }
 }
