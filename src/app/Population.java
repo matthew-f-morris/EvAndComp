@@ -47,18 +47,6 @@ public class Population {
             pop1 = tempA;
             pop2 = tempB;
 
-            // if (generation % 50 == 0) {
-            // if (prob - 0.01 > 0.005) {
-            // prob -= 0.01;
-            // System.out.println("Gen: " + generation + " , Prob: " + prob);
-            // }
-            // }
-
-            // for (Member m : pop1)
-            // m.mutate(prob);
-            // for (Member m : pop2)
-            // m.mutate(prob);
-
             for (Member m : pop1)
                 m.mutate();
             for (Member m : pop2)
@@ -70,10 +58,6 @@ public class Population {
                 sb.append(this.getOBF1() + ", " + this.getOBF2() + ", " + aveA / select.sampleSize + ", "
                         + aveB / select.sampleSize + "\n");
             }
-
-            // if (generation % 50 == 0) {
-            // select.incSample(1);
-            // }
         }
 
         if (print) {

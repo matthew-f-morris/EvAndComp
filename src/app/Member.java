@@ -82,25 +82,6 @@ public class Member {
         return newMember;
     }
 
-    public String toStringa() { // [PASS]
-
-        StringBuilder builder = new StringBuilder();
-        builder.append("[");
-
-        for (int i = 0; i < this.bits.length; i++) {
-            builder.append("[");
-            for (int j = 0; j < this.bits[i].length; j++) {
-                builder.append(bits[i][j]);
-            }
-            builder.append("], ");s
-        }
-
-        builder.deleteCharAt(builder.length() - 1);
-        builder.deleteCharAt(builder.length() - 1);
-        builder.append("]");
-        return builder.toString();
-    }
-
     public String toString() {
 
         StringBuilder builder = new StringBuilder();
