@@ -13,6 +13,8 @@ public class Population {
     public Member[] pop1;
     public Member[] pop2;
     private StringBuilder sb = new StringBuilder();
+    private double min = 0.005;
+    private double max = 0.1;
 
     public Population(Selector select, int popSize, int target, int dimention) {
 
@@ -32,7 +34,7 @@ public class Population {
     }
 
     public void run(int maxGen, boolean print, int printOnGen) {
-        // double prob = 0.2;
+
         int generation = 0;
         Member[] tempA;
         Member[] tempB;
@@ -47,10 +49,23 @@ public class Population {
             pop1 = tempA;
             pop2 = tempB;
 
-            for (Member m : pop1)
-                m.mutate();
-            for (Member m : pop2)
-                m.mutate();
+            int[] pop1Score = select.getHammingScores(pop1);
+            int[] pop2Score = select.getHammingScores(pop2);
+            int sum1 = Arrays.stream(pop1Score).sum();
+            int sum2 = Arrays.stream(pop2Score).sum();
+
+            // for (Member m : pop1)
+            // m.mutate();
+            // for (Member m : pop2)
+            // m.mutate();
+
+            for (int i = 0; i < pop1.length; i++) {
+                pop1[i].mutate(calcMR(pop1Score[i], sum1));
+            }
+
+            for (int i = 0; i < pop1.length; i++) {
+                pop2[i].mutate(calcMR(pop2Score[i], sum2));
+            }
 
             generation++;
 
@@ -86,6 +101,10 @@ public class Population {
         for (Member m : pop2)
             sum += m.objectiveFitness();
         return sum / pop2.length;
+    }
+
+    public double calcMR(int score, int sum) {
+        return this.min + (double) score / sum * (this.max - this.min);
     }
 
     @Override
