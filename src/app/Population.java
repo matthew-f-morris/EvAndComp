@@ -31,13 +31,13 @@ public class Population {
         this.pop2 = pop2;
     }
 
-    public void run(int gen, boolean print, int printOnGen) {
+    public void run(int maxGen, boolean print, int printOnGen) {
         // double prob = 0.2;
         int generation = 0;
         Member[] tempA;
         Member[] tempB;
 
-        while (generation < gen) {
+        while (generation < maxGen) {
 
             tempA = select.selectPop(this.pop1, this.pop2);
             tempB = select.selectPop(this.pop2, this.pop1);
