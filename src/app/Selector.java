@@ -1,6 +1,8 @@
 package app;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.SplittableRandom;
 
@@ -10,11 +12,13 @@ public class Selector {
     private Equation eq = null;
     public int sampleSize = 15;
     private int popSize;
+    private boolean hamming;
 
-    public Selector(Equation eq, int sampleSize, int popSize) {
+    public Selector(Equation eq, int sampleSize, int popSize, boolean hamming) {
         this.eq = eq;
         this.sampleSize = sampleSize;
         this.popSize = popSize;
+        this.hamming = hamming;
     }
 
     public Member[] selectPop(Member[] pop, Member[] otherPop) { // [PASS]
@@ -25,7 +29,7 @@ public class Selector {
         int[] wheel = new int[newPop.length];
 
         for (int i = 0; i < pop.length; i++) {
-            sum += eq.getFitness(pop[i], this.getSubSample(otherPop));
+            sum += eq.getFitness(pop[i], this.getSubSample(otherPop, hamming));
             wheel[i] = sum;
         }
 
@@ -47,25 +51,14 @@ public class Selector {
         return newPop;
     }
 
-    private double getSub(Member[] pop) {
+    public Member[] getSubSample(Member[] S, boolean hamming) { // [PASS]
 
-        int sum = 0;
-        for (int i = 0; i < pop.length; i++)
-            sum += eq.getFitness(pop[i], this.getSubSample(pop));
-        return (double) sum / pop.length;
-    }
+        int[] indexes;
+        if (hamming)
+            indexes = this.getHammingScores(S);
+        else
+            indexes = this.getSubsampleIndexes(S.length);
 
-    public double getSub(Member[] pop, Member[] other) {
-
-        int sum = 0;
-        for (int i = 0; i < pop.length; i++)
-            sum += eq.getFitness(pop[i], this.getSubSample(other));
-        return (double) sum / pop.length;
-    }
-
-    public Member[] getSubSample(Member[] S) { // [PASS]
-
-        int[] indexes = this.getSubsampleIndexes(S.length);
         Member[] subSample = new Member[indexes.length];
 
         for (int i = 0; i < subSample.length; i++) {
@@ -107,22 +100,71 @@ public class Selector {
         }
     }
 
-    public int hammingDistance(Member a, Member b){
-        
+    public int[] getHammingScores(Member[] pop) {
+
+        int[][] scores = new int[pop.length][2];
+
+        for (int i = 0; i < scores.length; i++) {
+            for (int j = 0; j < scores.length; j++) {
+                if (i != j) {
+                    int score = hammingDistance(pop[i], pop[j]);
+                    if (score < 0) {
+                        scores[i][1] -= 1;
+                    } else if (score > 0) {
+                        scores[i][1] += 1;
+                    }
+                }
+            }
+
+            scores[i][1] = Math.abs(scores[i][1]);
+            scores[i][0] = i;
+        }
+
+        Arrays.sort(scores, new Comparator<int[]>() {
+            public int compare(int[] a, int[] b) {
+                return Integer.compare(a[1], b[1]);
+            }
+        });
+
+        int[] sorted = new int[scores.length];
+
+        for (int i = 0; i < sorted.length; i++) {
+            sorted[i] = scores[sorted.length - 1 - i][0];
+        }
+
+        return sorted;
+    }
+
+    public int hammingDistance(Member a, Member b) {
+
+        // if positive, A is better, else B is better
+
         int overall = 0;
         int[][] bitsA = a.getBits();
         int[][] bitsB = b.getBits();
 
-        for(int i = 0; i < bitsA.length; i++){
+        for (int i = 0; i < bitsA.length; i++) {
             int partial = 0;
-            for(int j = 0; j < bitsA[i].length; j++){
-                if(bitsA[i][j] != bitsB[i][j])
+            for (int j = 0; j < bitsA[i].length; j++) {
+                int x = bitsA[i][j];
+                int y = bitsB[i][j];
+                if (x > y)
                     partial++;
+                else if (x < y)
+                    partial--;
             }
 
-            overall += partial;        
+            overall += partial;
         }
 
         return overall;
+    }
+
+    public double getSub(Member[] pop, Member[] other) {
+
+        int sum = 0;
+        for (int i = 0; i < pop.length; i++)
+            sum += eq.getFitness(pop[i], this.getSubSample(other, false));
+        return (double) sum / pop.length;
     }
 }
