@@ -47,7 +47,7 @@ public class Selector {
         return newPop;
     }
 
-    public double getSub(Member[] pop) {
+    private double getSub(Member[] pop) {
 
         int sum = 0;
         for (int i = 0; i < pop.length; i++)
@@ -75,7 +75,7 @@ public class Selector {
         return subSample;
     }
 
-    public int[] getSubsampleIndexes(int arraySize) { // [PASS]
+    private int[] getSubsampleIndexes(int arraySize) { // [PASS]
 
         // return array of 15 random indexes for members with no duplicates
         int[] newIndexes = new int[sampleSize];
@@ -105,5 +105,24 @@ public class Selector {
             this.sampleSize -= dec;
             System.out.println("SS: " + this.sampleSize);
         }
+    }
+
+    public int hammingDistance(Member a, Member b){
+        
+        int overall = 0;
+        int[][] bitsA = a.getBits();
+        int[][] bitsB = b.getBits();
+
+        for(int i = 0; i < bitsA.length; i++){
+            int partial = 0;
+            for(int j = 0; j < bitsA[i].length; j++){
+                if(bitsA[i][j] != bitsB[i][j])
+                    partial++;
+            }
+
+            overall += partial;        
+        }
+
+        return overall;
     }
 }
