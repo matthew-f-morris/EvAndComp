@@ -21,7 +21,7 @@ public class Selector {
         this.hamming = hamming;
     }
 
-    public Member[] selectPop(Member[] pop, Member[] otherPop) { // [PASS]
+    public Member[] selectPop(Member[] pop, Member[] otherPop, boolean best) { // [PASS]
 
         Member[] newPop = new Member[pop.length];
 
@@ -29,7 +29,7 @@ public class Selector {
         int[] wheel = new int[newPop.length];
 
         for (int i = 0; i < pop.length; i++) {
-            sum += eq.getFitness(pop[i], this.getSubSample(otherPop, hamming, 5));
+            sum += eq.getFitnessSharing(pop[i], this.getSubSample(otherPop, hamming, 5, best));
             wheel[i] = sum;
         }
 
@@ -51,9 +51,9 @@ public class Selector {
         return newPop;
     }
 
-    public Member[] getSubSample(Member[] S, boolean hamming, int numberBest) { // [PASS]
+    public Member[] getSubSample(Member[] S, boolean hamming, int numberBest, boolean best) { // [PASS]
 
-        int[] ham = this.getHammingScores(S);
+        int[] ham = this.getHammingScores(S, best);
         int[] indexes = this.getSubsampleIndexes(S.length);
         Member[] subSample = new Member[sampleSize];
 
@@ -62,6 +62,18 @@ public class Selector {
         }
 
         for (int i = numberBest; i < sampleSize; i++) {
+            subSample[i] = S[indexes[i]].clone();
+        }
+
+        return subSample;
+    }
+
+    public Member[] getSubSample(Member[] S) { // [PASS]
+
+        int[] indexes = this.getSubsampleIndexes(S.length);
+        Member[] subSample = new Member[sampleSize];
+
+        for (int i = 0; i < indexes.length; i++) {
             subSample[i] = S[indexes[i]].clone();
         }
 
@@ -100,7 +112,7 @@ public class Selector {
         }
     }
 
-    public int[] getHammingScores(Member[] pop) {
+    public int[] getHammingScores(Member[] pop, boolean best) {
 
         int[][] scores = new int[pop.length][2];
 
@@ -128,8 +140,14 @@ public class Selector {
 
         int[] sorted = new int[scores.length];
 
-        for (int i = 0; i < sorted.length; i++) {
-            sorted[i] = scores[sorted.length - 1 - i][0];
+        if (best) {
+            for (int i = 0; i < sorted.length; i++) {
+                sorted[i] = scores[sorted.length - 1 - i][0];
+            }
+        } else {
+            for (int i = 0; i < sorted.length; i++) {
+                sorted[i] = scores[i][0];
+            }
         }
 
         return sorted;
@@ -164,7 +182,7 @@ public class Selector {
 
         int sum = 0;
         for (int i = 0; i < pop.length; i++)
-            sum += eq.getFitness(pop[i], this.getSubSample(other, false, 0));
+            sum += eq.getFitness(pop[i], this.getSubSample(other, false, 0, false));
         return (double) sum / pop.length;
     }
 }

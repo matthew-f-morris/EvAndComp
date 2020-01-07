@@ -39,8 +39,8 @@ public class Population {
 
         while (generation < maxGen) {
 
-            tempA = select.selectPop(this.pop1, this.pop2);
-            tempB = select.selectPop(this.pop2, this.pop1);
+            tempA = select.selectPop(this.pop1, this.pop2, false);
+            tempB = select.selectPop(this.pop2, this.pop1, false);
             double aveA = select.getSub(this.pop1, pop2);
             double aveB = select.getSub(this.pop2, pop1);
 

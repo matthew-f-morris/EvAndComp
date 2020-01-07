@@ -7,10 +7,11 @@ public class Main {
         int popSize = 25;
         int sampleSize = 15;
         int target = 100;
-        int dimentions = 2;
+        int dimentions = 10;
         boolean hamming = true;
+        double dissimilarity = 50.0;
 
-        Selector select = new Selector(new EquationThree(), sampleSize, popSize, hamming);
+        Selector select = new Selector(new EquationThree(dissimilarity), sampleSize, popSize, hamming);
         Population p = new Population(select, popSize, target, dimentions);
 
         long startTime = System.nanoTime();
