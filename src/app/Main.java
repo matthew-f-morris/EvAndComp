@@ -7,14 +7,18 @@ public class Main {
         int popSize = 25;
         int sampleSize = 15;
         int target = 100;
-        int dimentions = 2;
+        int dimentions = 10;
         boolean hamming = true;
+        boolean hammingMutate = false;
+        boolean hof = false;
+        double mutation = 0.005;
 
-        Selector select = new Selector(new EquationThree(), sampleSize, popSize, hamming);
-        Population p = new Population(select, popSize, target, dimentions);
+        Selector select = new Selector(new EquationTwo(), sampleSize, popSize, hamming, hof, target, dimentions);
+        Population p = new Population(select, mutation, popSize, target, dimentions, hammingMutate, hof);
 
         long startTime = System.nanoTime();
         p.run(600, true, 1);
+        p.toString();
         long endTime = System.nanoTime();
 
         System.out.println("\nTime to Run: " + (endTime - startTime));

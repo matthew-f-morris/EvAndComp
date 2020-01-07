@@ -14,7 +14,7 @@ public class Selector {
     private int popSize;
     private boolean hamming;
 
-    public Selector(Equation eq, int sampleSize, int popSize, boolean hamming) {
+    public Selector(Equation eq, int sampleSize, int popSize, boolean hamming, boolean hof, int target, int dimension) {
         this.eq = eq;
         this.sampleSize = sampleSize;
         this.popSize = popSize;
@@ -30,6 +30,39 @@ public class Selector {
 
         for (int i = 0; i < pop.length; i++) {
             sum += eq.getFitness(pop[i], this.getSubSample(otherPop, hamming));
+            wheel[i] = sum;
+        }
+
+        for (int i = 0; i < pop.length; i++) {
+
+            double pick;
+            if (sum == 0)
+                pick = rand.nextDouble(sum + 1);
+            else
+                pick = rand.nextDouble(sum);
+            int j = 0;
+            while (wheel[j] < pick) {
+                j++;
+            }
+
+            newPop[i] = pop[j].clone();
+        }
+
+        return newPop;
+    }
+
+    public Member[] selectPopHoF(Member[] pop, Hall otherPop) { // [PASS]
+
+        Member[] newPop = new Member[pop.length];
+
+        int sum = 1;
+        int[] wheel = new int[newPop.length];
+
+        for (int i = 0; i < pop.length; i++) {
+
+            int fit = eq.getFitness(pop[i], this.getSubSample(otherPop.hof, hamming));
+            sum += fit;
+            otherPop.check(pop[i], fit);
             wheel[i] = sum;
         }
 
