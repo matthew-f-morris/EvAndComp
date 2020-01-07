@@ -29,7 +29,7 @@ public class Selector {
         int[] wheel = new int[newPop.length];
 
         for (int i = 0; i < pop.length; i++) {
-            sum += eq.getFitness(pop[i], this.getSubSample(otherPop, hamming));
+            sum += eq.getFitness(pop[i], this.getSubSample(otherPop, hamming, 5));
             wheel[i] = sum;
         }
 
@@ -51,17 +51,17 @@ public class Selector {
         return newPop;
     }
 
-    public Member[] getSubSample(Member[] S, boolean hamming) { // [PASS]
+    public Member[] getSubSample(Member[] S, boolean hamming, int numberBest) { // [PASS]
 
-        int[] indexes;
-        if (hamming)
-            indexes = this.getHammingScores(S);
-        else
-            indexes = this.getSubsampleIndexes(S.length);
+        int[] ham = this.getHammingScores(S);
+        int[] indexes = this.getSubsampleIndexes(S.length);
+        Member[] subSample = new Member[sampleSize];
 
-        Member[] subSample = new Member[indexes.length];
+        for (int i = 0; i < numberBest; i++) {
+            subSample[i] = S[ham[i]].clone();
+        }
 
-        for (int i = 0; i < subSample.length; i++) {
+        for (int i = numberBest; i < sampleSize; i++) {
             subSample[i] = S[indexes[i]].clone();
         }
 
@@ -164,7 +164,7 @@ public class Selector {
 
         int sum = 0;
         for (int i = 0; i < pop.length; i++)
-            sum += eq.getFitness(pop[i], this.getSubSample(other, false));
+            sum += eq.getFitness(pop[i], this.getSubSample(other, false, 0));
         return (double) sum / pop.length;
     }
 }
