@@ -12,13 +12,11 @@ public class Selector {
     private Equation eq = null;
     public int sampleSize = 15;
     private int popSize;
-    private boolean hamming;
 
-    public Selector(Equation eq, int sampleSize, int popSize, boolean hamming, boolean hof, int target, int dimension) {
+    public Selector(Equation eq, int sampleSize, int popSize, boolean hof, int target, int dimension) {
         this.eq = eq;
         this.sampleSize = sampleSize;
         this.popSize = popSize;
-        this.hamming = hamming;
     }
 
     public Member[] selectPop(Member[] pop, Member[] otherPop) { // [PASS]
@@ -29,7 +27,7 @@ public class Selector {
         double[] wheel = new double[newPop.length];
 
         for (int i = 0; i < pop.length; i++) {
-            sum += eq.getFitness(pop[i], this.getSubSample(otherPop, hamming));
+            sum += eq.getFitness(pop[i], this.getSubSample(otherPop));
             wheel[i] = sum;
         }
 
@@ -64,14 +62,26 @@ public class Selector {
         return newPop;
     }
 
-    public Member[] getSubSample(Member[] S, boolean hamming) { // [PASS]
+    public Member[] getSubSampleHamming(Member[] S, int numberBest) { // [PASS]
 
-        int[] indexes;
-        if (hamming)
-            indexes = this.getHammingScores(S);
-        else
-            indexes = this.getSubsampleIndexes(S.length);
+        int[] ham = this.getHammingScores(S);
+        int[] indexes = this.getSubsampleIndexes(S.length);
+        Member[] subSample = new Member[sampleSize];
 
+        for (int i = 0; i < numberBest; i++) {
+            subSample[i] = S[ham[i]].clone();
+        }
+
+        for (int i = numberBest; i < sampleSize; i++) {
+            subSample[i] = S[indexes[i]].clone();
+        }
+
+        return subSample;
+    }
+
+    public Member[] getSubSample(Member[] S) { // [PASS]
+
+        int[] indexes = this.getSubsampleIndexes(S.length);
         Member[] subSample = new Member[indexes.length];
 
         for (int i = 0; i < subSample.length; i++) {
@@ -177,7 +187,7 @@ public class Selector {
 
         int sum = 0;
         for (int i = 0; i < pop.length; i++)
-            sum += eq.getFitness(pop[i], this.getSubSample(other, false));
+            sum += eq.getFitness(pop[i], this.getSubSample(other));
         return (double) sum / pop.length;
     }
 }

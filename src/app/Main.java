@@ -7,13 +7,12 @@ public class Main {
         int popSize = 25;
         int sampleSize = 15;
         int target = 100;
-        int dimentions = 2;
-        boolean hamming = true;
+        int dimentions = 10;
         boolean hammingMutate = false;
         double mutation = 0.005;
         double dissimilarity = 100.0;
 
-        Selector select = new Selector(new EquationThree(dissimilarity), sampleSize, popSize, hamming, false, target,
+        Selector select = new Selector(new EquationThree(dissimilarity), sampleSize, popSize, false, target,
                 dimentions);
         Population p = new Population(select, mutation, popSize, target, dimentions, hammingMutate, false);
 
