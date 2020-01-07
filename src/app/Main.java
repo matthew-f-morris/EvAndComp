@@ -19,16 +19,5 @@ public class Main {
         long endTime = System.nanoTime();
 
         System.out.println("\nTime to Run: " + (endTime - startTime));
-
-        // Member a = new Member(new int[][] { { 0, 0, 0, 0 }, { 0, 0, 0, 0 } });
-        // Member b = new Member(new int[][] { { 0, 0, 0, 0 }, { 1, 1, 1, 1 } });
-        // Member c = new Member(new int[][] { { 1, 1, 1, 1 }, { 0, 0, 0, 0 } });
-        // Member d = new Member(new int[][] { { 1, 1, 1, 1 }, { 1, 1, 0, 0 } });
-        // Member e = new Member(new int[][] { { 1, 1, 1, 1 }, { 1, 1, 1, 1 } });
-
-        // Member[] pop = new Member[] { b, a, c, e, d };
-
-        // System.out.println(Arrays.toString(select.getHammingScores(pop)));
-
     }
 }

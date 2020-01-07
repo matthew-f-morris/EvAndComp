@@ -4,6 +4,13 @@ import java.util.Arrays;
 
 public class EquationOne extends Equation {
 
+    private double dissimilarity = 0.0;
+    private double shape = 1.0;
+
+    public EquationOne(double dissimilarity) {
+        super(dissimilarity);
+    }
+
     public int getFitness(Member a, Member[] S) { // [PASS]
 
         // a = member from pop
