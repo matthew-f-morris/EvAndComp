@@ -25,8 +25,8 @@ public class Selector {
 
         Member[] newPop = new Member[pop.length];
 
-        int sum = 1;
-        int[] wheel = new int[newPop.length];
+        double sum = 1;
+        double[] wheel = new double[newPop.length];
 
         for (int i = 0; i < pop.length; i++) {
             sum += eq.getFitness(pop[i], this.getSubSample(otherPop, hamming));

@@ -17,6 +17,9 @@ public class Population {
     private double max = 0.05;
     private boolean hammingMutate = false;
     private double p = 0.005;
+    private int target;
+    private int dimention;
+    private int popSize;
 
     public Population(Selector select, double p, int popSize, int target, int dimention, boolean hammingMutate,
             boolean hof) {
@@ -24,6 +27,9 @@ public class Population {
         this.select = select;
         this.hammingMutate = hammingMutate;
         this.p = p;
+        this.target = target;
+        this.dimention = dimention;
+        this.popSize = popSize;
 
         pop1 = new Member[popSize];
         pop2 = new Member[popSize];
@@ -39,20 +45,14 @@ public class Population {
     }
 
     public void run(int maxGen, boolean print, int printOnGen) {
-        boolean rand = true;
         int generation = 0;
         Member[] tempA;
         Member[] tempB;
 
         while (generation < maxGen) {
 
-            if (rand) {
-                tempA = select.selectPop(this.pop1, this.pop2);
-                tempB = select.selectPop(this.pop2, this.pop1);
-            } else {
-                tempA = select.selectPopRand(this.pop1, this.pop2);
-                tempB = select.selectPopRand(this.pop2, this.pop1);
-            }
+            tempA = select.selectPop(this.pop1, this.pop2);
+            tempB = select.selectPop(this.pop2, this.pop1);
 
             double aveA = select.getSub(this.pop1, pop2);
             double aveB = select.getSub(this.pop2, pop1);

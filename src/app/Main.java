@@ -10,36 +10,34 @@ public class Main {
         int dimentions = 2;
         boolean hamming = true;
         boolean hammingMutate = false;
-        boolean hof = false;
         double mutation = 0.005;
+        double dissimilarity = 100.0;
 
-        Selector select = new Selector(new EquationThree(), sampleSize, popSize, hamming, hof, target, dimentions);
-        Population p = new Population(select, mutation, popSize, target, dimentions, hammingMutate, hof);
+        Selector select = new Selector(new EquationThree(dissimilarity), sampleSize, popSize, hamming, false, target,
+                dimentions);
+        Population p = new Population(select, mutation, popSize, target, dimentions, hammingMutate, false);
 
         long startTime = System.nanoTime();
         p.run(600, true, 1);
-        p.toString();
         long endTime = System.nanoTime();
 
         System.out.println("\nTime to Run: " + (endTime - startTime));
 
+        // Member a = new Member(new int[][] { { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 1, 0,
+        // 1, 0 } });
+        // Member b = new Member(new int[][] { { 0, 0, 0, 0 }, { 1, 1, 1, 1 }, { 1, 0,
+        // 1, 0 } });
+        // Member c = new Member(new int[][] { { 1, 1, 1, 1 }, { 0, 0, 0, 0 }, { 1, 0,
+        // 1, 0 } });
+        // Member d = new Member(new int[][] { { 1, 1, 1, 1 }, { 1, 1, 0, 0 }, { 1, 0,
+        // 1, 0 } });
+        // Member e = new Member(new int[][] { { 1, 1, 1, 1 }, { 1, 1, 1, 1 }, { 1, 1,
+        // 1, 1 } });
+
+        // Member[] pop = new Member[] { b, a, c, e, d };
+
+        // EquationThree eq3 = new EquationThree();
+        // System.out.println("Fitness: " + eq3.getFitnessSharing(d, pop));
+
     }
 }
-
-// Member a = new Member(new int[][] { { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 1, 0,
-// 1, 0 } });
-// Member b = new Member(new int[][] { { 0, 0, 0, 0 }, { 1, 1, 1, 1 }, { 1, 0,
-// 1, 0 } });
-// Member c = new Member(new int[][] { { 1, 1, 1, 1 }, { 0, 0, 0, 0 }, { 1, 0,
-// 1, 0 } });
-// Member d = new Member(new int[][] { { 1, 1, 1, 1 }, { 1, 1, 0, 0 }, { 1, 0,
-// 1, 0 } });
-// Member e = new Member(new int[][] { { 1, 1, 1, 1 }, { 1, 1, 1, 1 }, { 1, 1,
-// 1, 1 } });
-
-// Member[] pop = new Member[] { b, a, c, e, d };
-
-// Equation eq2 = new EquationTwo();
-// System.out.println("Fitness: " + eq2.getFitness(e, pop));
-
-// System.out.println(Arrays.toString(select.getHammingScores(pop)));
